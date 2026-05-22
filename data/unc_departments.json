@@ -1,0 +1,5 @@
+{
+  "public_health": ["public health", "epidemiology", "vaccine", "infectious disease"],
+  "business": ["supply chain", "venture capital", "corporate strategy", "fintech"],
+  "computer_science": ["computer vision", "machine learning", "cybersecurity", "distributed systems"]
+}

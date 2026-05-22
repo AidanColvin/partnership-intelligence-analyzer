@@ -1,0 +1,5 @@
+{
+  "computer_science": ["machine learning", "artificial intelligence", "distributed systems", "cybersecurity", "computer vision"],
+  "health_data": ["biomedical informatics", "clinical data", "mhealth", "fhir", "epidemiology"],
+  "oncology": ["kinase", "oncology", "cancer", "kinase-inhibitor", "precision medicine"]
+}

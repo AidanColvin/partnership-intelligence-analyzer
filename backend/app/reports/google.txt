@@ -1,0 +1,1 @@
+Google is a pioneer in cloud-scale computing and AI, specifically leveraging 'Gemini' for healthcare applications and DeepMind for computational biology. Their enterprise and research tooling align with university-scale data science operations.
