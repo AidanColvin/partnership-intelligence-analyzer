@@ -1,0 +1,1 @@
+# partnership-intelligence-analyzer
