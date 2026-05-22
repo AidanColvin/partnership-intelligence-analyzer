@@ -1,0 +1,1 @@
+OpenAI is a leader in artificial intelligence and natural language processing. Their core research focuses on training massive machine learning models, distributed systems for compute scaling, and ensuring the safe deployment of generative computer vision models.
