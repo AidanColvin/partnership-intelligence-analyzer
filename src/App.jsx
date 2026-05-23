@@ -80,6 +80,17 @@ const COMPANIES = [
     logoBg: '#ffffff',
     summary: 'Dominant U.S. EHR (43.7% market share). Cosmos: 300M+ deidentified patient records. UNC Health is an active co-development partner with 3 documented AI milestones.',
   },
+  {
+    slug: 'unc-health',
+    name: 'UNC Health',
+    parent: 'UNC Health Care System',
+    ticker: 'State Entity',
+    tags: ['Academic Health System', 'SHIRE', 'NC TraCS'],
+    accent: '#4B9CD3',
+    grad: ['#13294B', '#4B9CD3'],
+    logoBg: '#ffffff',
+    summary: '$7.4B academic health system. 17 hospitals, 900+ clinics, 56K employees. SHIRE AI research platform live April 2026. NC Lineberger NCI Cancer Center. UNC\'s own clinical asset.',
+  },
 ];
 
 function hexRgb(hex) {
@@ -179,6 +190,27 @@ function EpicLogo({ size }) {
   );
 }
 
+// UNC Health — two-tone "UNC / Health" wordmark in navy + Carolina blue.
+function UNCHealthLogo({ size }) {
+  const fs1 = Math.round(size * 0.30);   // "UNC" — larger
+  const fs2 = Math.round(size * 0.19);   // "Health" — smaller below
+  return (
+    <svg width={size} height={size} viewBox={`0 0 ${size} ${size}`}
+         xmlns="http://www.w3.org/2000/svg" overflow="visible">
+      <text x={size / 2} y={size * 0.46}
+        textAnchor="middle"
+        fontFamily="'Helvetica Neue', Helvetica, Arial, sans-serif"
+        fontSize={fs1} fontWeight="800" fill="#13294B"
+        letterSpacing="-0.5">UNC</text>
+      <text x={size / 2} y={size * 0.68}
+        textAnchor="middle"
+        fontFamily="'Helvetica Neue', Helvetica, Arial, sans-serif"
+        fontSize={fs2} fontWeight="600" fill="#4B9CD3"
+        letterSpacing="0.5">Health</text>
+    </svg>
+  );
+}
+
 // Microsoft — official 4-square Windows flag logo.
 function MicrosoftLogo({ size }) {
   const gap = size * 0.06;
@@ -234,7 +266,8 @@ function CompanyLogo({ slug, size }) {
   if (slug === 'eli-lilly') return <LillyLogo size={size} />;
   if (slug === 'jnj')       return <JNJLogo size={size} />;
   if (slug === 'microsoft') return <MicrosoftLogo size={size} />;
-  if (slug === 'epic')      return <EpicLogo size={size} />;
+  if (slug === 'epic')       return <EpicLogo size={size} />;
+  if (slug === 'unc-health') return <UNCHealthLogo size={size} />;
   return null;
 }
 
@@ -412,12 +445,12 @@ function EmptyState({ onSelect }) {
           Select a company<br />to view its report
         </h1>
         <p style={{ fontSize: '15px', color: '#52525b', lineHeight: '1.65', margin: 0 }}>
-          Seven curated intelligence profiles ready for your review.<br />
+          Eight curated intelligence profiles ready for your review.<br />
           Search by name or click a card below.
         </p>
       </div>
 
-      {/* 4 on top row, 3 centred below */}
+      {/* 4 + 4 grid */}
       <div style={{ display: 'flex', flexDirection: 'column', gap: '20px', alignItems: 'center' }}>
         <div style={{ display: 'flex', gap: '20px' }}>
           {COMPANIES.slice(0, 4).map(co => <Tile key={co.slug} co={co} onSelect={onSelect} />)}
@@ -622,7 +655,7 @@ export default function App() {
           <div style={{ display: 'flex', alignItems: 'center', gap: '6px' }}>
             <div style={{ width: '6px', height: '6px', borderRadius: '50%', background: '#22c55e', boxShadow: '0 0 6px #22c55e' }} />
             <span style={{ fontSize: '10px', color: '#3f3f46', fontWeight: '500', letterSpacing: '0.03em' }}>
-              Demo · 7 reports available
+              Demo · 8 reports available
             </span>
           </div>
         </div>
