@@ -55,8 +55,19 @@ const COMPANIES = [
     tags: ['Innovative Medicine', 'MedTech', 'Clinical Trials'],
     accent: '#CC0000',
     grad: ['#CC0000', '#8B0000'],
-    logoBg: '#ffffff',          // white so red script wordmark shows clearly
+    logoBg: '#ffffff',
     summary: 'Diversified healthcare leader spanning Innovative Medicine and MedTech with $94.2B FY2025 sales and AI-enabled clinical operations.',
+  },
+  {
+    slug: 'microsoft',
+    name: 'Microsoft',
+    parent: 'Microsoft Corporation',
+    ticker: 'MSFT',
+    tags: ['Cloud', 'Enterprise AI', 'Health Data'],
+    accent: '#0078D4',
+    grad: ['#0078D4', '#005a9e'],
+    logoBg: '#ffffff',
+    summary: '$281.7B FY2025 revenue. Azure at $75B+. AI business at $37B run rate. FHIR health data infrastructure and 200+ AI for Health grantee partnerships.',
   },
 ];
 
@@ -137,6 +148,24 @@ function LillyLogo({ size }) {
   );
 }
 
+// Microsoft — official 4-square Windows flag logo.
+function MicrosoftLogo({ size }) {
+  const gap = size * 0.06;
+  const sq  = (size - gap) / 2;
+  return (
+    <svg width={size} height={size} viewBox={`0 0 ${size} ${size}`} xmlns="http://www.w3.org/2000/svg">
+      {/* Top-left: red */}
+      <rect x={0}        y={0}        width={sq} height={sq} fill="#F25022"/>
+      {/* Top-right: green */}
+      <rect x={sq+gap}   y={0}        width={sq} height={sq} fill="#7FBA00"/>
+      {/* Bottom-left: blue */}
+      <rect x={0}        y={sq+gap}   width={sq} height={sq} fill="#00A4EF"/>
+      {/* Bottom-right: yellow */}
+      <rect x={sq+gap}   y={sq+gap}   width={sq} height={sq} fill="#FFB900"/>
+    </svg>
+  );
+}
+
 // Johnson & Johnson — classic red script wordmark rendered as two-line italic serif text.
 function JNJLogo({ size }) {
   const fs = Math.round(size * 0.185);  // two lines of "Johnson" fit at ~0.185×
@@ -173,6 +202,7 @@ function CompanyLogo({ slug, size }) {
   if (slug === 'pfizer')    return <PfizerLogo size={size} />;
   if (slug === 'eli-lilly') return <LillyLogo size={size} />;
   if (slug === 'jnj')       return <JNJLogo size={size} />;
+  if (slug === 'microsoft') return <MicrosoftLogo size={size} />;
   return null;
 }
 
@@ -350,17 +380,13 @@ function EmptyState({ onSelect }) {
           Select a company<br />to view its report
         </h1>
         <p style={{ fontSize: '15px', color: '#52525b', lineHeight: '1.65', margin: 0 }}>
-          Five curated intelligence profiles ready for your review.<br />
+          Six curated intelligence profiles ready for your review.<br />
           Search by name or click a card below.
         </p>
       </div>
 
-      <div style={{ display: 'grid', gridTemplateColumns: 'repeat(3, 200px)', gap: '20px', justifyItems: 'center' }}>
-        {COMPANIES.slice(0, 3).map(co => <Tile key={co.slug} co={co} onSelect={onSelect} />)}
-        {/* Bottom row: 2 tiles centered under the top 3 */}
-        <div style={{ gridColumn: '1 / -1', display: 'flex', gap: '20px', justifyContent: 'center' }}>
-          {COMPANIES.slice(3).map(co => <Tile key={co.slug} co={co} onSelect={onSelect} />)}
-        </div>
+      <div style={{ display: 'grid', gridTemplateColumns: 'repeat(3, 200px)', gap: '20px' }}>
+        {COMPANIES.map(co => <Tile key={co.slug} co={co} onSelect={onSelect} />)}
       </div>
     </div>
   );
@@ -558,7 +584,7 @@ export default function App() {
           <div style={{ display: 'flex', alignItems: 'center', gap: '6px' }}>
             <div style={{ width: '6px', height: '6px', borderRadius: '50%', background: '#22c55e', boxShadow: '0 0 6px #22c55e' }} />
             <span style={{ fontSize: '10px', color: '#3f3f46', fontWeight: '500', letterSpacing: '0.03em' }}>
-              Demo · 5 reports available
+              Demo · 6 reports available
             </span>
           </div>
         </div>
