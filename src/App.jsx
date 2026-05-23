@@ -472,7 +472,7 @@ export default function App() {
           style={{ padding: '22px 18px 18px', cursor: 'pointer' }}
         >
           <div style={{ display: 'flex', alignItems: 'center', gap: '10px', marginBottom: '3px' }}>
-            {/* App icon: open book */}
+            {/* App icon: retro CRT monitor */}
             <div style={{
               width: '30px', height: '30px', borderRadius: '8px',
               background: '#ffffff',
@@ -480,22 +480,22 @@ export default function App() {
               display: 'flex', alignItems: 'center', justifyContent: 'center', flexShrink: 0,
             }}>
               <svg width="20" height="20" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg">
-                {/* Left page */}
-                <path d="M10 5 C8 4.5 5 4.5 2.5 5 L2.5 16 C5 15.5 8 15.5 10 16 Z" fill="#111111"/>
-                {/* Right page */}
-                <path d="M10 5 C12 4.5 15 4.5 17.5 5 L17.5 16 C15 15.5 12 15.5 10 16 Z" fill="#111111"/>
-                {/* Center spine crease */}
-                <line x1="10" y1="5" x2="10" y2="16" stroke="#555555" strokeWidth="0.6"/>
-                {/* Left page text lines */}
-                <line x1="4" y1="8"    x2="8.5" y2="7.7"  stroke="#555555" strokeWidth="0.75" strokeLinecap="round"/>
-                <line x1="4" y1="10.2" x2="8.5" y2="9.9"  stroke="#555555" strokeWidth="0.75" strokeLinecap="round"/>
-                <line x1="4" y1="12.4" x2="7"   y2="12.2" stroke="#555555" strokeWidth="0.75" strokeLinecap="round"/>
-                {/* Right page text lines */}
-                <line x1="11.5" y1="7.7"  x2="16" y2="8"    stroke="#555555" strokeWidth="0.75" strokeLinecap="round"/>
-                <line x1="11.5" y1="9.9"  x2="16" y2="10.2" stroke="#555555" strokeWidth="0.75" strokeLinecap="round"/>
-                <line x1="11.5" y1="12.2" x2="14" y2="12.4" stroke="#555555" strokeWidth="0.75" strokeLinecap="round"/>
-                {/* Curved spine/binding at bottom */}
-                <path d="M2.5 16 Q10 17.2 17.5 16" stroke="#111111" strokeWidth="1.2" strokeLinecap="round" fill="none"/>
+                {/* Monitor bezel */}
+                <rect x="1" y="1" width="18" height="12.5" rx="1.5" fill="#111111"/>
+                {/* Screen glass */}
+                <rect x="2.5" y="2.2" width="15" height="9.8" rx="0.8" fill="#0d0d0d"/>
+                {/* Green phosphor glow — scanline text effect */}
+                <rect x="4"   y="4"   width="5" height="1.1" rx="0.3" fill="#22c55e" opacity="0.9"/>
+                <rect x="4"   y="6"   width="8" height="1.1" rx="0.3" fill="#22c55e" opacity="0.6"/>
+                <rect x="4"   y="8"   width="6" height="1.1" rx="0.3" fill="#22c55e" opacity="0.6"/>
+                {/* Blinking cursor block */}
+                <rect x="10.2" y="4" width="1.2" height="1.1" rx="0.2" fill="#22c55e"/>
+                {/* Neck */}
+                <rect x="9" y="13.5" width="2" height="2.5" fill="#111111"/>
+                {/* Base */}
+                <rect x="5.5" y="16" width="9" height="1.6" rx="0.8" fill="#111111"/>
+                {/* Screen glare highlight */}
+                <rect x="3.5" y="3" width="3.5" height="1.2" rx="0.4" fill="white" opacity="0.07"/>
               </svg>
             </div>
             <div style={{ fontSize: '13px', fontWeight: '700', color: '#f4f4f5', letterSpacing: '-0.02em' }}>
