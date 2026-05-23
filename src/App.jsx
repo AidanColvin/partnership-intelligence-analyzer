@@ -472,27 +472,30 @@ export default function App() {
           style={{ padding: '22px 18px 18px', cursor: 'pointer' }}
         >
           <div style={{ display: 'flex', alignItems: 'center', gap: '10px', marginBottom: '3px' }}>
-            {/* App icon: network graph representing partnership intelligence */}
+            {/* App icon: retro CRT monitor */}
             <div style={{
               width: '30px', height: '30px', borderRadius: '8px',
-              background: 'linear-gradient(135deg, #3b82f6, #6366f1)',
+              background: '#ffffff',
+              border: '1px solid #e4e4e7',
               display: 'flex', alignItems: 'center', justifyContent: 'center', flexShrink: 0,
             }}>
-              <svg width="18" height="18" viewBox="0 0 18 18" fill="none" xmlns="http://www.w3.org/2000/svg">
-                {/* Connection lines */}
-                <line x1="9" y1="9" x2="3" y2="4"  stroke="rgba(255,255,255,0.5)" strokeWidth="1.1" strokeLinecap="round"/>
-                <line x1="9" y1="9" x2="15" y2="4" stroke="rgba(255,255,255,0.5)" strokeWidth="1.1" strokeLinecap="round"/>
-                <line x1="9" y1="9" x2="3" y2="14" stroke="rgba(255,255,255,0.5)" strokeWidth="1.1" strokeLinecap="round"/>
-                <line x1="9" y1="9" x2="15" y2="14" stroke="rgba(255,255,255,0.5)" strokeWidth="1.1" strokeLinecap="round"/>
-                <line x1="3" y1="4"  x2="15" y2="4"  stroke="rgba(255,255,255,0.25)" strokeWidth="0.8" strokeLinecap="round"/>
-                <line x1="3" y1="14" x2="15" y2="14" stroke="rgba(255,255,255,0.25)" strokeWidth="0.8" strokeLinecap="round"/>
-                {/* Outer nodes */}
-                <circle cx="3"  cy="4"  r="2" fill="white" fillOpacity="0.75"/>
-                <circle cx="15" cy="4"  r="2" fill="white" fillOpacity="0.75"/>
-                <circle cx="3"  cy="14" r="2" fill="white" fillOpacity="0.75"/>
-                <circle cx="15" cy="14" r="2" fill="white" fillOpacity="0.75"/>
-                {/* Central hub node */}
-                <circle cx="9" cy="9" r="2.8" fill="white"/>
+              <svg width="20" height="20" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg">
+                {/* Monitor bezel */}
+                <rect x="1" y="1" width="18" height="12.5" rx="1.5" fill="#111111"/>
+                {/* Screen glass */}
+                <rect x="2.5" y="2.2" width="15" height="9.8" rx="0.8" fill="#0d0d0d"/>
+                {/* Green phosphor glow — scanline text effect */}
+                <rect x="4"   y="4"   width="5" height="1.1" rx="0.3" fill="#22c55e" opacity="0.9"/>
+                <rect x="4"   y="6"   width="8" height="1.1" rx="0.3" fill="#22c55e" opacity="0.6"/>
+                <rect x="4"   y="8"   width="6" height="1.1" rx="0.3" fill="#22c55e" opacity="0.6"/>
+                {/* Blinking cursor block */}
+                <rect x="10.2" y="4" width="1.2" height="1.1" rx="0.2" fill="#22c55e"/>
+                {/* Neck */}
+                <rect x="9" y="13.5" width="2" height="2.5" fill="#111111"/>
+                {/* Base */}
+                <rect x="5.5" y="16" width="9" height="1.6" rx="0.8" fill="#111111"/>
+                {/* Screen glare highlight */}
+                <rect x="3.5" y="3" width="3.5" height="1.2" rx="0.4" fill="white" opacity="0.07"/>
               </svg>
             </div>
             <div style={{ fontSize: '13px', fontWeight: '700', color: '#f4f4f5', letterSpacing: '-0.02em' }}>
