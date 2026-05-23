@@ -33,7 +33,7 @@ const COMPANIES = [
     tags: ['Oncology', 'Vaccines', 'Clinical Trials'],
     accent: '#0093d0',
     grad: ['#0093d0', '#00617f'],
-    logoBg: null,
+    logoBg: '#ffffff',          // white so wordmark shows in brand blue
     summary: 'Translational science, diversified late-stage pipeline, vaccine infrastructure, and clinical R&D.',
   },
   {
@@ -44,7 +44,7 @@ const COMPANIES = [
     tags: ['Cardiometabolic', 'Oncology', 'Neuroscience'],
     accent: '#C8102E',
     grad: ['#C8102E', '#8b0d1f'],
-    logoBg: null,
+    logoBg: '#ffffff',          // white so wordmark shows in brand red
     summary: 'Blockbuster cardiometabolic franchise (Mounjaro, Zepbound) with deep pipeline across oncology, immunology, and neuroscience.',
   },
 ];
@@ -87,20 +87,41 @@ function AppleLogo({ size, color = '#fff' }) {
   );
 }
 
-function PfizerLogo({ size, color = '#fff' }) {
-  // Stylised "P" lettermark — clean sans-serif capital P path
+// Pfizer — wordmark "pfizer" in brand blue on white background.
+// viewBox matches display size so fontSize scales correctly at every size.
+function PfizerLogo({ size }) {
+  const fs = Math.round(size * 0.28);   // 6 chars: fits width at 0.28×
   return (
-    <svg width={size} height={size} viewBox="0 0 24 24" fill={color} xmlns="http://www.w3.org/2000/svg">
-      <path d="M5.5 3h7.25C15.65 3 18 5.35 18 8.25S15.65 13.5 12.75 13.5H8.5V21h-3V3zm3 7.5h4.25c1.52 0 2.25-.98 2.25-2.25S14.27 6 12.75 6H8.5v4.5z"/>
+    <svg width={size} height={size} viewBox={`0 0 ${size} ${size}`}
+         xmlns="http://www.w3.org/2000/svg" overflow="visible">
+      <text
+        x={size / 2} y={size * 0.63}
+        textAnchor="middle"
+        fontFamily="'Helvetica Neue', Helvetica, Arial, sans-serif"
+        fontSize={fs}
+        fontWeight="700"
+        fill="#0093d0"
+        letterSpacing="-0.3"
+      >pfizer</text>
     </svg>
   );
 }
 
-// Eli Lilly — clean "L" lettermark in white on their brand red
-function LillyLogo({ size, color = '#fff' }) {
+// Eli Lilly — wordmark "Lilly" in brand red on white background.
+function LillyLogo({ size }) {
+  const fs = Math.round(size * 0.32);   // 5 chars: fits width at 0.32×
   return (
-    <svg width={size} height={size} viewBox="0 0 24 24" fill={color} xmlns="http://www.w3.org/2000/svg">
-      <path d="M6.5 3.5h3v14h7.5v3h-10.5V3.5z"/>
+    <svg width={size} height={size} viewBox={`0 0 ${size} ${size}`}
+         xmlns="http://www.w3.org/2000/svg" overflow="visible">
+      <text
+        x={size / 2} y={size * 0.64}
+        textAnchor="middle"
+        fontFamily="'Helvetica Neue', Helvetica, Arial, sans-serif"
+        fontSize={fs}
+        fontWeight="700"
+        fill="#C8102E"
+        letterSpacing="-0.2"
+      >Lilly</text>
     </svg>
   );
 }
@@ -108,8 +129,8 @@ function LillyLogo({ size, color = '#fff' }) {
 function CompanyLogo({ slug, size }) {
   if (slug === 'google')    return <GoogleLogo size={size} />;
   if (slug === 'apple')     return <AppleLogo size={size} color="#fff" />;
-  if (slug === 'pfizer')    return <PfizerLogo size={size} color="#fff" />;
-  if (slug === 'eli-lilly') return <LillyLogo size={size} color="#fff" />;
+  if (slug === 'pfizer')    return <PfizerLogo size={size} />;
+  if (slug === 'eli-lilly') return <LillyLogo size={size} />;
   return null;
 }
 
@@ -117,8 +138,9 @@ function CompanyLogo({ slug, size }) {
 // Google gets white bg so the 4-color G shows; others use their gradient.
 
 function Avatar({ co, size, shadow = false }) {
-  const isGoogle = co.slug === 'google';
-  const logoSize = Math.round(size * (isGoogle ? 0.72 : 0.62));
+  const hasWhiteBg = co.logoBg === '#ffffff';
+  // Google's colorful G needs more room; wordmarks need slightly more too
+  const logoSize = Math.round(size * (hasWhiteBg ? 0.78 : 0.62));
 
   return (
     <div style={{
@@ -129,7 +151,7 @@ function Avatar({ co, size, shadow = false }) {
       flexShrink: 0,
       boxShadow: shadow ? `0 4px 20px rgba(${hexRgb(co.accent)},0.35)` : 'none',
       transition: 'box-shadow 0.2s ease',
-      border: isGoogle ? '1px solid #e8e8e8' : 'none',
+      border: hasWhiteBg ? '1px solid #e8e8e8' : 'none',
     }}>
       <CompanyLogo slug={co.slug} size={logoSize} />
     </div>
@@ -291,7 +313,7 @@ function EmptyState({ onSelect }) {
         </p>
       </div>
 
-      <div style={{ display: 'flex', gap: '20px', flexWrap: 'wrap', justifyContent: 'center' }}>
+      <div style={{ display: 'grid', gridTemplateColumns: 'repeat(2, 200px)', gap: '20px' }}>
         {COMPANIES.map(co => <Tile key={co.slug} co={co} onSelect={onSelect} />)}
       </div>
     </div>
