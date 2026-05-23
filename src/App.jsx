@@ -286,7 +286,7 @@ function EmptyState({ onSelect }) {
           Select a company<br />to view its report
         </h1>
         <p style={{ fontSize: '15px', color: '#52525b', lineHeight: '1.65', margin: 0 }}>
-          Three curated intelligence profiles ready for your review.<br />
+          Four curated intelligence profiles ready for your review.<br />
           Search by name or click a card below.
         </p>
       </div>
@@ -468,7 +468,7 @@ export default function App() {
           <div style={{ display: 'flex', alignItems: 'center', gap: '6px' }}>
             <div style={{ width: '6px', height: '6px', borderRadius: '50%', background: '#22c55e', boxShadow: '0 0 6px #22c55e' }} />
             <span style={{ fontSize: '10px', color: '#3f3f46', fontWeight: '500', letterSpacing: '0.03em' }}>
-              Demo · 3 reports available
+              Demo · 4 reports available
             </span>
           </div>
         </div>
