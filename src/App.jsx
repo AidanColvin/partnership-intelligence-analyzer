@@ -75,8 +75,8 @@ const COMPANIES = [
     parent: 'Epic Systems Corporation',
     ticker: 'Private',
     tags: ['EHR', 'Clinical AI', 'Cosmos'],
-    accent: '#E31837',
-    grad: ['#E31837', '#a01020'],
+    accent: '#CC1230',
+    grad: ['#CC1230', '#8a0d20'],
     logoBg: '#ffffff',
     summary: 'Dominant U.S. EHR (43.7% market share). Cosmos: 300M+ deidentified patient records. UNC Health is an active co-development partner with 3 documented AI milestones.',
   },
@@ -159,35 +159,22 @@ function LillyLogo({ size }) {
   );
 }
 
-// Epic Systems — stylized "e" monogram in Epic red on white.
+// Epic Systems — bold italic "Epic" wordmark in brand red, matching official logo.
 function EpicLogo({ size }) {
-  const r  = size * 0.42;           // circle radius
-  const cx = size / 2;
-  const cy = size / 2;
-  const sw = size * 0.13;           // stroke width
-  // Arc from ~200° to ~520° (320° sweep) — open "e" shape
-  const toRad = d => (d * Math.PI) / 180;
-  const startAngle = toRad(155);
-  const endAngle   = toRad(520);    // wraps past 360°, cap at 360 for the gap
-  const arcEnd     = toRad(25);     // gap at top-right
-  const x1 = cx + r * Math.cos(startAngle);
-  const y1 = cy + r * Math.sin(startAngle);
-  const x2 = cx + r * Math.cos(arcEnd);
-  const y2 = cy + r * Math.sin(arcEnd);
-  // Horizontal bar across center
-  const barY  = cy + r * Math.sin(toRad(0));
-  const barX1 = cx - r;
-  const barX2 = cx + r * 0.62;
+  const fs = Math.round(size * 0.36);
   return (
-    <svg width={size} height={size} viewBox={`0 0 ${size} ${size}`} xmlns="http://www.w3.org/2000/svg">
-      {/* Open circle arc (the "e" outer curve) */}
-      <path
-        d={`M ${x1} ${y1} A ${r} ${r} 0 1 1 ${x2} ${y2}`}
-        fill="none" stroke="#E31837" strokeWidth={sw} strokeLinecap="round"
-      />
-      {/* Center crossbar */}
-      <line x1={barX1} y1={barY} x2={barX2} y2={barY}
-        stroke="#E31837" strokeWidth={sw} strokeLinecap="round"/>
+    <svg width={size} height={size} viewBox={`0 0 ${size} ${size}`}
+         xmlns="http://www.w3.org/2000/svg" overflow="visible">
+      <text
+        x={size / 2} y={size * 0.66}
+        textAnchor="middle"
+        fontFamily="'Helvetica Neue', Helvetica, Arial, sans-serif"
+        fontSize={fs}
+        fontWeight="800"
+        fontStyle="italic"
+        fill="#CC1230"
+        letterSpacing="-0.5"
+      >Epic</text>
     </svg>
   );
 }
