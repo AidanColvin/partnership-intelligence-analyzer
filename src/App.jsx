@@ -69,6 +69,17 @@ const COMPANIES = [
     logoBg: '#ffffff',
     summary: '$281.7B FY2025 revenue. Azure at $75B+. AI business at $37B run rate. FHIR health data infrastructure and 200+ AI for Health grantee partnerships.',
   },
+  {
+    slug: 'epic',
+    name: 'Epic',
+    parent: 'Epic Systems Corporation',
+    ticker: 'Private',
+    tags: ['EHR', 'Clinical AI', 'Cosmos'],
+    accent: '#E31837',
+    grad: ['#E31837', '#a01020'],
+    logoBg: '#ffffff',
+    summary: 'Dominant U.S. EHR (43.7% market share). Cosmos: 300M+ deidentified patient records. UNC Health is an active co-development partner with 3 documented AI milestones.',
+  },
 ];
 
 function hexRgb(hex) {
@@ -148,6 +159,39 @@ function LillyLogo({ size }) {
   );
 }
 
+// Epic Systems — stylized "e" monogram in Epic red on white.
+function EpicLogo({ size }) {
+  const r  = size * 0.42;           // circle radius
+  const cx = size / 2;
+  const cy = size / 2;
+  const sw = size * 0.13;           // stroke width
+  // Arc from ~200° to ~520° (320° sweep) — open "e" shape
+  const toRad = d => (d * Math.PI) / 180;
+  const startAngle = toRad(155);
+  const endAngle   = toRad(520);    // wraps past 360°, cap at 360 for the gap
+  const arcEnd     = toRad(25);     // gap at top-right
+  const x1 = cx + r * Math.cos(startAngle);
+  const y1 = cy + r * Math.sin(startAngle);
+  const x2 = cx + r * Math.cos(arcEnd);
+  const y2 = cy + r * Math.sin(arcEnd);
+  // Horizontal bar across center
+  const barY  = cy + r * Math.sin(toRad(0));
+  const barX1 = cx - r;
+  const barX2 = cx + r * 0.62;
+  return (
+    <svg width={size} height={size} viewBox={`0 0 ${size} ${size}`} xmlns="http://www.w3.org/2000/svg">
+      {/* Open circle arc (the "e" outer curve) */}
+      <path
+        d={`M ${x1} ${y1} A ${r} ${r} 0 1 1 ${x2} ${y2}`}
+        fill="none" stroke="#E31837" strokeWidth={sw} strokeLinecap="round"
+      />
+      {/* Center crossbar */}
+      <line x1={barX1} y1={barY} x2={barX2} y2={barY}
+        stroke="#E31837" strokeWidth={sw} strokeLinecap="round"/>
+    </svg>
+  );
+}
+
 // Microsoft — official 4-square Windows flag logo.
 function MicrosoftLogo({ size }) {
   const gap = size * 0.06;
@@ -203,6 +247,7 @@ function CompanyLogo({ slug, size }) {
   if (slug === 'eli-lilly') return <LillyLogo size={size} />;
   if (slug === 'jnj')       return <JNJLogo size={size} />;
   if (slug === 'microsoft') return <MicrosoftLogo size={size} />;
+  if (slug === 'epic')      return <EpicLogo size={size} />;
   return null;
 }
 
@@ -380,13 +425,19 @@ function EmptyState({ onSelect }) {
           Select a company<br />to view its report
         </h1>
         <p style={{ fontSize: '15px', color: '#52525b', lineHeight: '1.65', margin: 0 }}>
-          Six curated intelligence profiles ready for your review.<br />
+          Seven curated intelligence profiles ready for your review.<br />
           Search by name or click a card below.
         </p>
       </div>
 
-      <div style={{ display: 'grid', gridTemplateColumns: 'repeat(3, 200px)', gap: '20px' }}>
-        {COMPANIES.map(co => <Tile key={co.slug} co={co} onSelect={onSelect} />)}
+      {/* 4 on top row, 3 centred below */}
+      <div style={{ display: 'flex', flexDirection: 'column', gap: '20px', alignItems: 'center' }}>
+        <div style={{ display: 'flex', gap: '20px' }}>
+          {COMPANIES.slice(0, 4).map(co => <Tile key={co.slug} co={co} onSelect={onSelect} />)}
+        </div>
+        <div style={{ display: 'flex', gap: '20px' }}>
+          {COMPANIES.slice(4).map(co => <Tile key={co.slug} co={co} onSelect={onSelect} />)}
+        </div>
       </div>
     </div>
   );
@@ -584,7 +635,7 @@ export default function App() {
           <div style={{ display: 'flex', alignItems: 'center', gap: '6px' }}>
             <div style={{ width: '6px', height: '6px', borderRadius: '50%', background: '#22c55e', boxShadow: '0 0 6px #22c55e' }} />
             <span style={{ fontSize: '10px', color: '#3f3f46', fontWeight: '500', letterSpacing: '0.03em' }}>
-              Demo · 6 reports available
+              Demo · 7 reports available
             </span>
           </div>
         </div>
