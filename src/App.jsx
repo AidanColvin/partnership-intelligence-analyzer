@@ -47,6 +47,17 @@ const COMPANIES = [
     logoBg: '#ffffff',          // white so wordmark shows in brand red
     summary: 'Blockbuster cardiometabolic franchise (Mounjaro, Zepbound) with deep pipeline across oncology, immunology, and neuroscience.',
   },
+  {
+    slug: 'jnj',
+    name: 'Johnson & Johnson',
+    parent: 'Johnson & Johnson',
+    ticker: 'JNJ',
+    tags: ['Innovative Medicine', 'MedTech', 'Clinical Trials'],
+    accent: '#CC0000',
+    grad: ['#CC0000', '#8B0000'],
+    logoBg: '#ffffff',          // white so red script wordmark shows clearly
+    summary: 'Diversified healthcare leader spanning Innovative Medicine and MedTech with $94.2B FY2025 sales and AI-enabled clinical operations.',
+  },
 ];
 
 function hexRgb(hex) {
@@ -126,11 +137,42 @@ function LillyLogo({ size }) {
   );
 }
 
+// Johnson & Johnson — classic red script wordmark rendered as two-line italic serif text.
+function JNJLogo({ size }) {
+  const fs = Math.round(size * 0.185);  // two lines of "Johnson" fit at ~0.185×
+  const y1 = size * 0.44;
+  const y2 = size * 0.70;
+  return (
+    <svg width={size} height={size} viewBox={`0 0 ${size} ${size}`}
+         xmlns="http://www.w3.org/2000/svg" overflow="visible">
+      <text
+        x={size / 2} y={y1}
+        textAnchor="middle"
+        fontFamily="Georgia, 'Times New Roman', serif"
+        fontSize={fs}
+        fontStyle="italic"
+        fontWeight="400"
+        fill="#CC0000"
+      >Johnson</text>
+      <text
+        x={size / 2} y={y2}
+        textAnchor="middle"
+        fontFamily="Georgia, 'Times New Roman', serif"
+        fontSize={fs}
+        fontStyle="italic"
+        fontWeight="400"
+        fill="#CC0000"
+      >&amp; Johnson</text>
+    </svg>
+  );
+}
+
 function CompanyLogo({ slug, size }) {
   if (slug === 'google')    return <GoogleLogo size={size} />;
   if (slug === 'apple')     return <AppleLogo size={size} color="#fff" />;
   if (slug === 'pfizer')    return <PfizerLogo size={size} />;
   if (slug === 'eli-lilly') return <LillyLogo size={size} />;
+  if (slug === 'jnj')       return <JNJLogo size={size} />;
   return null;
 }
 
@@ -308,13 +350,17 @@ function EmptyState({ onSelect }) {
           Select a company<br />to view its report
         </h1>
         <p style={{ fontSize: '15px', color: '#52525b', lineHeight: '1.65', margin: 0 }}>
-          Four curated intelligence profiles ready for your review.<br />
+          Five curated intelligence profiles ready for your review.<br />
           Search by name or click a card below.
         </p>
       </div>
 
-      <div style={{ display: 'grid', gridTemplateColumns: 'repeat(2, 200px)', gap: '20px' }}>
-        {COMPANIES.map(co => <Tile key={co.slug} co={co} onSelect={onSelect} />)}
+      <div style={{ display: 'grid', gridTemplateColumns: 'repeat(3, 200px)', gap: '20px', justifyItems: 'center' }}>
+        {COMPANIES.slice(0, 3).map(co => <Tile key={co.slug} co={co} onSelect={onSelect} />)}
+        {/* Bottom row: 2 tiles centered under the top 3 */}
+        <div style={{ gridColumn: '1 / -1', display: 'flex', gap: '20px', justifyContent: 'center' }}>
+          {COMPANIES.slice(3).map(co => <Tile key={co.slug} co={co} onSelect={onSelect} />)}
+        </div>
       </div>
     </div>
   );
@@ -490,7 +536,7 @@ export default function App() {
           <div style={{ display: 'flex', alignItems: 'center', gap: '6px' }}>
             <div style={{ width: '6px', height: '6px', borderRadius: '50%', background: '#22c55e', boxShadow: '0 0 6px #22c55e' }} />
             <span style={{ fontSize: '10px', color: '#3f3f46', fontWeight: '500', letterSpacing: '0.03em' }}>
-              Demo · 4 reports available
+              Demo · 5 reports available
             </span>
           </div>
         </div>
