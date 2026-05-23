@@ -466,22 +466,41 @@ export default function App() {
         background: '#0f0f11', borderRight: '1px solid #1c1c1f',
         display: 'flex', flexDirection: 'column', height: '100vh',
       }}>
-        {/* Brand */}
-        <div style={{ padding: '22px 18px 18px' }}>
+        {/* Brand — click to return home */}
+        <div
+          onClick={() => setSelected(null)}
+          style={{ padding: '22px 18px 18px', cursor: 'pointer' }}
+        >
           <div style={{ display: 'flex', alignItems: 'center', gap: '10px', marginBottom: '3px' }}>
+            {/* App icon: network graph representing partnership intelligence */}
             <div style={{
               width: '30px', height: '30px', borderRadius: '8px',
               background: 'linear-gradient(135deg, #3b82f6, #6366f1)',
               display: 'flex', alignItems: 'center', justifyContent: 'center', flexShrink: 0,
             }}>
-              <span style={{ fontSize: '9px', fontWeight: '900', color: '#fff', letterSpacing: '-0.02em' }}>UNC</span>
+              <svg width="18" height="18" viewBox="0 0 18 18" fill="none" xmlns="http://www.w3.org/2000/svg">
+                {/* Connection lines */}
+                <line x1="9" y1="9" x2="3" y2="4"  stroke="rgba(255,255,255,0.5)" strokeWidth="1.1" strokeLinecap="round"/>
+                <line x1="9" y1="9" x2="15" y2="4" stroke="rgba(255,255,255,0.5)" strokeWidth="1.1" strokeLinecap="round"/>
+                <line x1="9" y1="9" x2="3" y2="14" stroke="rgba(255,255,255,0.5)" strokeWidth="1.1" strokeLinecap="round"/>
+                <line x1="9" y1="9" x2="15" y2="14" stroke="rgba(255,255,255,0.5)" strokeWidth="1.1" strokeLinecap="round"/>
+                <line x1="3" y1="4"  x2="15" y2="4"  stroke="rgba(255,255,255,0.25)" strokeWidth="0.8" strokeLinecap="round"/>
+                <line x1="3" y1="14" x2="15" y2="14" stroke="rgba(255,255,255,0.25)" strokeWidth="0.8" strokeLinecap="round"/>
+                {/* Outer nodes */}
+                <circle cx="3"  cy="4"  r="2" fill="white" fillOpacity="0.75"/>
+                <circle cx="15" cy="4"  r="2" fill="white" fillOpacity="0.75"/>
+                <circle cx="3"  cy="14" r="2" fill="white" fillOpacity="0.75"/>
+                <circle cx="15" cy="14" r="2" fill="white" fillOpacity="0.75"/>
+                {/* Central hub node */}
+                <circle cx="9" cy="9" r="2.8" fill="white"/>
+              </svg>
             </div>
             <div style={{ fontSize: '13px', fontWeight: '700', color: '#f4f4f5', letterSpacing: '-0.02em' }}>
               Partnership Intelligence
             </div>
           </div>
-          <div style={{ fontSize: '10px', color: '#3f3f46', letterSpacing: '0.01em', paddingLeft: '40px' }}>
-            Office of Innovation &amp; Commercialization
+          <div style={{ fontSize: '10px', color: '#3f3f46', letterSpacing: '0.01em', paddingLeft: '40px', fontFamily: 'monospace' }}>
+            partnership-intelligence-analyzer
           </div>
         </div>
 
