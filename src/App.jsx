@@ -289,6 +289,7 @@ function Avatar({ co, size, shadow = false }) {
       boxShadow: shadow ? `0 4px 20px rgba(${hexRgb(co.accent)},0.35)` : 'none',
       transition: 'box-shadow 0.2s ease',
       border: hasWhiteBg ? '1px solid #e8e8e8' : 'none',
+      pointerEvents: 'none',   // SVG logos must not capture clicks — parent button handles them
     }}>
       <CompanyLogo slug={co.slug} size={logoSize} />
     </div>
