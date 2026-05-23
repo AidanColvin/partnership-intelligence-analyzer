@@ -33,8 +33,19 @@ const COMPANIES = [
     tags: ['Oncology', 'Vaccines', 'Clinical Trials'],
     accent: '#0093d0',
     grad: ['#0093d0', '#00617f'],
-    logoBg: null,               // use gradient
+    logoBg: null,
     summary: 'Translational science, diversified late-stage pipeline, vaccine infrastructure, and clinical R&D.',
+  },
+  {
+    slug: 'eli-lilly',
+    name: 'Eli Lilly',
+    parent: 'Eli Lilly and Company',
+    ticker: 'LLY',
+    tags: ['Cardiometabolic', 'Oncology', 'Neuroscience'],
+    accent: '#C8102E',
+    grad: ['#C8102E', '#8b0d1f'],
+    logoBg: null,
+    summary: 'Blockbuster cardiometabolic franchise (Mounjaro, Zepbound) with deep pipeline across oncology, immunology, and neuroscience.',
   },
 ];
 
@@ -85,10 +96,20 @@ function PfizerLogo({ size, color = '#fff' }) {
   );
 }
 
+// Eli Lilly — clean "L" lettermark in white on their brand red
+function LillyLogo({ size, color = '#fff' }) {
+  return (
+    <svg width={size} height={size} viewBox="0 0 24 24" fill={color} xmlns="http://www.w3.org/2000/svg">
+      <path d="M6.5 3.5h3v14h7.5v3h-10.5V3.5z"/>
+    </svg>
+  );
+}
+
 function CompanyLogo({ slug, size }) {
-  if (slug === 'google') return <GoogleLogo size={size} />;
-  if (slug === 'apple') return <AppleLogo size={size} color="#fff" />;
-  if (slug === 'pfizer') return <PfizerLogo size={size} color="#fff" />;
+  if (slug === 'google')    return <GoogleLogo size={size} />;
+  if (slug === 'apple')     return <AppleLogo size={size} color="#fff" />;
+  if (slug === 'pfizer')    return <PfizerLogo size={size} color="#fff" />;
+  if (slug === 'eli-lilly') return <LillyLogo size={size} color="#fff" />;
   return null;
 }
 
