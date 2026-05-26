@@ -91,6 +91,50 @@ const COMPANIES = [
     logoBg: '#ffffff',
     summary: '$7.4B academic health system. 17 hospitals, 900+ clinics, 56K employees. SHIRE AI research platform live April 2026. NC Lineberger NCI Cancer Center. UNC\'s own clinical asset.',
   },
+  {
+    slug: 'duke-health',
+    name: 'Duke Health',
+    parent: 'Duke University Health System',
+    ticker: 'Private',
+    tags: ['Academic Health System', 'DCRI', 'Duke AI Health'],
+    accent: '#001A57',
+    grad: ['#001A57', '#003a8c'],
+    logoBg: '#ffffff',
+    summary: '$7B+ academic health system. 4 hospitals, 140+ clinics, 26K employees. Home of DCRI (world\'s largest academic CRO). Triangle peer to UNC Health via Carolinas Collaborative.',
+  },
+  {
+    slug: 'atrium-health',
+    name: 'Atrium Health',
+    parent: 'Advocate Health',
+    ticker: 'NC Authority',
+    tags: ['Largest NC System', 'The Pearl', 'Wake Forest SOM'],
+    accent: '#00833D',
+    grad: ['#00833D', '#006830'],
+    logoBg: '#ffffff',
+    summary: '$14.5B Charlotte/GA operations within Advocate Health ($38.9B). 40 hospitals, 500+ care locations. The Pearl innovation district opened June 2025. Proposed WakeMed combination May 2026.',
+  },
+  {
+    slug: 'wakemed',
+    name: 'WakeMed',
+    parent: 'WakeMed Health & Hospitals',
+    ticker: 'Nonprofit',
+    tags: ['Wake County', 'Level I Trauma', 'Magnet w/ Distinction'],
+    accent: '#C8102E',
+    grad: ['#C8102E', '#8a0b1f'],
+    logoBg: '#ffffff',
+    summary: '$2.6B Wake County community health system. 973 beds, 3 acute care hospitals, 8 EDs, 354K+ annual ED visits. First NC system with ANCC Magnet Distinction. Proposed Atrium combination.',
+  },
+  {
+    slug: 'siemens-healthineers',
+    name: 'Siemens Healthineers',
+    parent: 'Siemens Healthineers AG',
+    ticker: 'FWB: SHL',
+    tags: ['Imaging', 'Varian / Radiation Oncology', 'Value Partnerships'],
+    accent: '#009B9E',
+    grad: ['#009B9E', '#006E72'],
+    logoBg: null,            // teal gradient background shows the white-S circle mark
+    summary: '€23.4B MedTech leader. Varian radiation oncology platform. teamplay AI on 5,000+ institutions. $141M committed to The Pearl NC. 200+ Value Partnerships with academic health systems.',
+  },
 ];
 
 function hexRgb(hex) {
@@ -211,6 +255,96 @@ function UNCHealthLogo({ size }) {
   );
 }
 
+// Duke Health — bold "Duke" wordmark with "HEALTH" beneath in Duke navy.
+function DukeHealthLogo({ size }) {
+  const fs1 = Math.round(size * 0.34);
+  const fs2 = Math.round(size * 0.16);
+  return (
+    <svg width={size} height={size} viewBox={`0 0 ${size} ${size}`}
+         xmlns="http://www.w3.org/2000/svg" overflow="visible">
+      <text x={size/2} y={size*0.50} textAnchor="middle"
+        fontFamily="'Helvetica Neue', Helvetica, Arial, sans-serif"
+        fontSize={fs1} fontWeight="800" fill="#001A57"
+        letterSpacing="-0.5">Duke</text>
+      <text x={size/2} y={size*0.72} textAnchor="middle"
+        fontFamily="'Helvetica Neue', Helvetica, Arial, sans-serif"
+        fontSize={fs2} fontWeight="700" fill="#003a8c"
+        letterSpacing="2">HEALTH</text>
+    </svg>
+  );
+}
+
+// Atrium Health — bold "Atrium" wordmark in green with "HEALTH" beneath.
+function AtriumHealthLogo({ size }) {
+  const fs1 = Math.round(size * 0.28);
+  const fs2 = Math.round(size * 0.16);
+  return (
+    <svg width={size} height={size} viewBox={`0 0 ${size} ${size}`}
+         xmlns="http://www.w3.org/2000/svg" overflow="visible">
+      <text x={size/2} y={size*0.50} textAnchor="middle"
+        fontFamily="'Helvetica Neue', Helvetica, Arial, sans-serif"
+        fontSize={fs1} fontWeight="800" fill="#00833D"
+        letterSpacing="-0.5">Atrium</text>
+      <text x={size/2} y={size*0.72} textAnchor="middle"
+        fontFamily="'Helvetica Neue', Helvetica, Arial, sans-serif"
+        fontSize={fs2} fontWeight="700" fill="#006830"
+        letterSpacing="2">HEALTH</text>
+    </svg>
+  );
+}
+
+// WakeMed — gray serif wordmark + red circle icon, matching actual brand.
+function WakeMedLogo({ size }) {
+  // Split the space: text on left ~70%, circle on right ~28%
+  const textArea  = size * 0.68;
+  const circleCx  = size * 0.84;
+  const circleCy  = size * 0.46;
+  const circleR   = size * 0.155;
+  const fs        = Math.round(size * 0.195);
+  // Inner cross/X shape — four curved petals approximated with rotated thin rects
+  const armW      = circleR * 0.26;
+  const armH      = circleR * 0.88;
+  return (
+    <svg width={size} height={size} viewBox={`0 0 ${size} ${size}`}
+         xmlns="http://www.w3.org/2000/svg" overflow="visible">
+      {/* Gray serif wordmark */}
+      <text x={textArea / 2} y={size * 0.56}
+        textAnchor="middle"
+        fontFamily="Georgia, 'Times New Roman', serif"
+        fontSize={fs} fontWeight="400" fontStyle="italic" fill="#6b6b6b"
+        letterSpacing="-0.2">WakeMed</text>
+      {/* Red brand circle */}
+      <circle cx={circleCx} cy={circleCy} r={circleR} fill="#C8102E" />
+      {/* White X / abstract mark inside circle — two crossed rounded bars */}
+      <g transform={`translate(${circleCx},${circleCy})`}>
+        <rect x={-armW/2} y={-armH/2} width={armW} height={armH}
+          rx={armW/2} fill="white" transform="rotate(-40)" />
+        <rect x={-armW/2} y={-armH/2} width={armW} height={armH}
+          rx={armW/2} fill="white" transform="rotate(40)" />
+      </g>
+    </svg>
+  );
+}
+
+// Siemens Healthineers — solid teal circle with white "S", matching actual brand mark.
+function SiemensHealthineersLogo({ size }) {
+  const r  = size * 0.42;
+  const cx = size / 2;
+  const cy = size / 2;
+  const fs = Math.round(size * 0.46);
+  return (
+    <svg width={size} height={size} viewBox={`0 0 ${size} ${size}`}
+         xmlns="http://www.w3.org/2000/svg">
+      <circle cx={cx} cy={cy} r={r} fill="#009B9E" />
+      <text x={cx} y={cy + fs * 0.36}
+        textAnchor="middle"
+        fontFamily="'Helvetica Neue', Helvetica, Arial, sans-serif"
+        fontSize={fs} fontWeight="700" fill="white"
+        letterSpacing="-1">S</text>
+    </svg>
+  );
+}
+
 // Microsoft — official 4-square Windows flag logo.
 function MicrosoftLogo({ size }) {
   const gap = size * 0.06;
@@ -268,6 +402,10 @@ function CompanyLogo({ slug, size }) {
   if (slug === 'microsoft') return <MicrosoftLogo size={size} />;
   if (slug === 'epic')       return <EpicLogo size={size} />;
   if (slug === 'unc-health') return <UNCHealthLogo size={size} />;
+  if (slug === 'duke-health') return <DukeHealthLogo size={size} />;
+  if (slug === 'atrium-health') return <AtriumHealthLogo size={size} />;
+  if (slug === 'wakemed') return <WakeMedLogo size={size} />;
+  if (slug === 'siemens-healthineers') return <SiemensHealthineersLogo size={size} />;
   return null;
 }
 
@@ -446,18 +584,21 @@ function EmptyState({ onSelect }) {
           Select a company<br />to view its report
         </h1>
         <p style={{ fontSize: '15px', color: '#52525b', lineHeight: '1.65', margin: 0 }}>
-          Eight curated intelligence profiles ready for your review.<br />
+          Twelve curated intelligence profiles ready for your review.<br />
           Search by name or click a card below.
         </p>
       </div>
 
-      {/* 4 + 4 grid */}
+      {/* 4 + 4 + 4 grid */}
       <div style={{ display: 'flex', flexDirection: 'column', gap: '20px', alignItems: 'center' }}>
         <div style={{ display: 'flex', gap: '20px' }}>
           {COMPANIES.slice(0, 4).map(co => <Tile key={co.slug} co={co} onSelect={onSelect} />)}
         </div>
         <div style={{ display: 'flex', gap: '20px' }}>
-          {COMPANIES.slice(4).map(co => <Tile key={co.slug} co={co} onSelect={onSelect} />)}
+          {COMPANIES.slice(4, 8).map(co => <Tile key={co.slug} co={co} onSelect={onSelect} />)}
+        </div>
+        <div style={{ display: 'flex', gap: '20px' }}>
+          {COMPANIES.slice(8).map(co => <Tile key={co.slug} co={co} onSelect={onSelect} />)}
         </div>
       </div>
     </div>
@@ -656,7 +797,7 @@ export default function App() {
           <div style={{ display: 'flex', alignItems: 'center', gap: '6px' }}>
             <div style={{ width: '6px', height: '6px', borderRadius: '50%', background: '#22c55e', boxShadow: '0 0 6px #22c55e' }} />
             <span style={{ fontSize: '10px', color: '#3f3f46', fontWeight: '500', letterSpacing: '0.03em' }}>
-              Demo · 8 reports available
+              Demo · 12 reports available
             </span>
           </div>
         </div>
