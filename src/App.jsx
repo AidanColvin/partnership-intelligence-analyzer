@@ -114,17 +114,6 @@ const COMPANIES = [
     summary: '$14.5B Charlotte/GA operations within Advocate Health ($38.9B). 40 hospitals, 500+ care locations. The Pearl innovation district opened June 2025. Proposed WakeMed combination May 2026.',
   },
   {
-    slug: 'wakemed',
-    name: 'WakeMed',
-    parent: 'WakeMed Health & Hospitals',
-    ticker: 'Nonprofit',
-    tags: ['Wake County', 'Level I Trauma', 'Magnet w/ Distinction'],
-    accent: '#C8102E',
-    grad: ['#C8102E', '#a01020'],
-    logoBg: '#ffffff',       // white bg so the self-contained red circle icon shows correctly
-    summary: '$2.6B Wake County community health system. 973 beds, 3 acute care hospitals, 8 EDs, 354K+ annual ED visits. First NC system with ANCC Magnet Distinction. Proposed Atrium combination.',
-  },
-  {
     slug: 'siemens-healthineers',
     name: 'Siemens Healthineers',
     parent: 'Siemens Healthineers AG',
@@ -293,47 +282,6 @@ function AtriumHealthLogo({ size }) {
   );
 }
 
-// WakeMed — red circle with white globe-curve X mark, matching actual brand.
-// Two cubic-bezier S-curves (stroked, clipped to circle) reproduce the
-// great-circle look of the WakeMed mark.
-function WakeMedLogo({ size }) {
-  const cx  = size / 2;
-  const cy  = size / 2;
-  const r   = size * 0.44;          // red circle radius
-  const sw  = r * 0.50;             // stroke width of each white band
-  const id  = `wm${Math.round(size)}`;   // unique clipPath id per render size
-
-  // Band 1: upper-left → lower-right, bowing outward (S-curve)
-  // Control points push the curve upward-right then downward-left
-  const d1 = `M ${cx - r * 0.70} ${cy - r * 0.70}
-               C ${cx + r * 0.18} ${cy - r * 0.80}
-                 ${cx - r * 0.18} ${cy + r * 0.80}
-                 ${cx + r * 0.70} ${cy + r * 0.70}`;
-
-  // Band 2: upper-right → lower-left, mirror S-curve
-  const d2 = `M ${cx + r * 0.70} ${cy - r * 0.70}
-               C ${cx - r * 0.18} ${cy - r * 0.80}
-                 ${cx + r * 0.18} ${cy + r * 0.80}
-                 ${cx - r * 0.70} ${cy + r * 0.70}`;
-
-  return (
-    <svg width={size} height={size} viewBox={`0 0 ${size} ${size}`}
-         xmlns="http://www.w3.org/2000/svg">
-      <defs>
-        <clipPath id={id}>
-          <circle cx={cx} cy={cy} r={r * 0.97} />
-        </clipPath>
-      </defs>
-      {/* Red filled circle */}
-      <circle cx={cx} cy={cy} r={r} fill="#C8102E" />
-      {/* Two crossing curved white bands, clipped to circle boundary */}
-      <g clipPath={`url(#${id})`}>
-        <path d={d1} stroke="white" strokeWidth={sw} fill="none" strokeLinecap="round" />
-        <path d={d2} stroke="white" strokeWidth={sw} fill="none" strokeLinecap="round" />
-      </g>
-    </svg>
-  );
-}
 
 // Siemens Healthineers — white "S" only; teal gradient avatar bg provides the circle.
 function SiemensHealthineersLogo({ size }) {
@@ -409,7 +357,6 @@ function CompanyLogo({ slug, size }) {
   if (slug === 'unc-health') return <UNCHealthLogo size={size} />;
   if (slug === 'duke-health') return <DukeHealthLogo size={size} />;
   if (slug === 'atrium-health') return <AtriumHealthLogo size={size} />;
-  if (slug === 'wakemed') return <WakeMedLogo size={size} />;
   if (slug === 'siemens-healthineers') return <SiemensHealthineersLogo size={size} />;
   return null;
 }
@@ -589,12 +536,12 @@ function EmptyState({ onSelect }) {
           Select a company<br />to view its report
         </h1>
         <p style={{ fontSize: '15px', color: '#52525b', lineHeight: '1.65', margin: 0 }}>
-          Twelve curated intelligence profiles ready for your review.<br />
+          Eleven curated intelligence profiles ready for your review.<br />
           Search by name or click a card below.
         </p>
       </div>
 
-      {/* 4 + 4 + 4 grid */}
+      {/* 4 + 4 + 3 grid */}
       <div style={{ display: 'flex', flexDirection: 'column', gap: '20px', alignItems: 'center' }}>
         <div style={{ display: 'flex', gap: '20px' }}>
           {COMPANIES.slice(0, 4).map(co => <Tile key={co.slug} co={co} onSelect={onSelect} />)}
@@ -802,7 +749,7 @@ export default function App() {
           <div style={{ display: 'flex', alignItems: 'center', gap: '6px' }}>
             <div style={{ width: '6px', height: '6px', borderRadius: '50%', background: '#22c55e', boxShadow: '0 0 6px #22c55e' }} />
             <span style={{ fontSize: '10px', color: '#3f3f46', fontWeight: '500', letterSpacing: '0.03em' }}>
-              Demo · 12 reports available
+              Demo · 11 reports available
             </span>
           </div>
         </div>
