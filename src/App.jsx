@@ -121,7 +121,7 @@ const COMPANIES = [
     tags: ['Wake County', 'Level I Trauma', 'Magnet w/ Distinction'],
     accent: '#C8102E',
     grad: ['#C8102E', '#a01020'],
-    logoBg: null,            // red gradient bg + white X mark = brand-accurate circle icon
+    logoBg: '#ffffff',       // white bg so the self-contained red circle icon shows correctly
     summary: '$2.6B Wake County community health system. 973 beds, 3 acute care hospitals, 8 EDs, 354K+ annual ED visits. First NC system with ANCC Magnet Distinction. Proposed Atrium combination.',
   },
   {
@@ -293,23 +293,44 @@ function AtriumHealthLogo({ size }) {
   );
 }
 
-// WakeMed — white X mark only; red gradient avatar bg gives the brand circle look.
+// WakeMed — red circle with white globe-curve X mark, matching actual brand.
+// Two cubic-bezier S-curves (stroked, clipped to circle) reproduce the
+// great-circle look of the WakeMed mark.
 function WakeMedLogo({ size }) {
-  const cx = size / 2;
-  const cy = size / 2;
-  const bw = size * 0.23;   // band width
-  const bh = size * 0.92;   // band length (fills full height, clipped by avatar radius)
-  const rx = bw / 2;
+  const cx  = size / 2;
+  const cy  = size / 2;
+  const r   = size * 0.44;          // red circle radius
+  const sw  = r * 0.50;             // stroke width of each white band
+  const id  = `wm${Math.round(size)}`;   // unique clipPath id per render size
+
+  // Band 1: upper-left → lower-right, bowing outward (S-curve)
+  // Control points push the curve upward-right then downward-left
+  const d1 = `M ${cx - r * 0.70} ${cy - r * 0.70}
+               C ${cx + r * 0.18} ${cy - r * 0.80}
+                 ${cx - r * 0.18} ${cy + r * 0.80}
+                 ${cx + r * 0.70} ${cy + r * 0.70}`;
+
+  // Band 2: upper-right → lower-left, mirror S-curve
+  const d2 = `M ${cx + r * 0.70} ${cy - r * 0.70}
+               C ${cx - r * 0.18} ${cy - r * 0.80}
+                 ${cx + r * 0.18} ${cy + r * 0.80}
+                 ${cx - r * 0.70} ${cy + r * 0.70}`;
+
   return (
     <svg width={size} height={size} viewBox={`0 0 ${size} ${size}`}
          xmlns="http://www.w3.org/2000/svg">
-      {/* Two crossing rounded white bands — forms the WakeMed X mark */}
-      <rect x={(size - bw) / 2} y={(size - bh) / 2}
-        width={bw} height={bh} rx={rx}
-        fill="white" transform={`rotate(42, ${cx}, ${cy})`} />
-      <rect x={(size - bw) / 2} y={(size - bh) / 2}
-        width={bw} height={bh} rx={rx}
-        fill="white" transform={`rotate(-42, ${cx}, ${cy})`} />
+      <defs>
+        <clipPath id={id}>
+          <circle cx={cx} cy={cy} r={r * 0.97} />
+        </clipPath>
+      </defs>
+      {/* Red filled circle */}
+      <circle cx={cx} cy={cy} r={r} fill="#C8102E" />
+      {/* Two crossing curved white bands, clipped to circle boundary */}
+      <g clipPath={`url(#${id})`}>
+        <path d={d1} stroke="white" strokeWidth={sw} fill="none" strokeLinecap="round" />
+        <path d={d2} stroke="white" strokeWidth={sw} fill="none" strokeLinecap="round" />
+      </g>
     </svg>
   );
 }
