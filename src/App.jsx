@@ -120,8 +120,8 @@ const COMPANIES = [
     ticker: 'Nonprofit',
     tags: ['Wake County', 'Level I Trauma', 'Magnet w/ Distinction'],
     accent: '#C8102E',
-    grad: ['#C8102E', '#8a0b1f'],
-    logoBg: '#ffffff',
+    grad: ['#C8102E', '#a01020'],
+    logoBg: null,            // red gradient bg + white X mark = brand-accurate circle icon
     summary: '$2.6B Wake County community health system. 973 beds, 3 acute care hospitals, 8 EDs, 354K+ annual ED visits. First NC system with ANCC Magnet Distinction. Proposed Atrium combination.',
   },
   {
@@ -293,50 +293,34 @@ function AtriumHealthLogo({ size }) {
   );
 }
 
-// WakeMed — gray serif wordmark + red circle icon, matching actual brand.
+// WakeMed — white X mark only; red gradient avatar bg gives the brand circle look.
 function WakeMedLogo({ size }) {
-  // Split the space: text on left ~70%, circle on right ~28%
-  const textArea  = size * 0.68;
-  const circleCx  = size * 0.84;
-  const circleCy  = size * 0.46;
-  const circleR   = size * 0.155;
-  const fs        = Math.round(size * 0.195);
-  // Inner cross/X shape — four curved petals approximated with rotated thin rects
-  const armW      = circleR * 0.26;
-  const armH      = circleR * 0.88;
+  const cx = size / 2;
+  const cy = size / 2;
+  const bw = size * 0.23;   // band width
+  const bh = size * 0.92;   // band length (fills full height, clipped by avatar radius)
+  const rx = bw / 2;
   return (
     <svg width={size} height={size} viewBox={`0 0 ${size} ${size}`}
-         xmlns="http://www.w3.org/2000/svg" overflow="visible">
-      {/* Gray serif wordmark */}
-      <text x={textArea / 2} y={size * 0.56}
-        textAnchor="middle"
-        fontFamily="Georgia, 'Times New Roman', serif"
-        fontSize={fs} fontWeight="400" fontStyle="italic" fill="#6b6b6b"
-        letterSpacing="-0.2">WakeMed</text>
-      {/* Red brand circle */}
-      <circle cx={circleCx} cy={circleCy} r={circleR} fill="#C8102E" />
-      {/* White X / abstract mark inside circle — two crossed rounded bars */}
-      <g transform={`translate(${circleCx},${circleCy})`}>
-        <rect x={-armW/2} y={-armH/2} width={armW} height={armH}
-          rx={armW/2} fill="white" transform="rotate(-40)" />
-        <rect x={-armW/2} y={-armH/2} width={armW} height={armH}
-          rx={armW/2} fill="white" transform="rotate(40)" />
-      </g>
+         xmlns="http://www.w3.org/2000/svg">
+      {/* Two crossing rounded white bands — forms the WakeMed X mark */}
+      <rect x={(size - bw) / 2} y={(size - bh) / 2}
+        width={bw} height={bh} rx={rx}
+        fill="white" transform={`rotate(42, ${cx}, ${cy})`} />
+      <rect x={(size - bw) / 2} y={(size - bh) / 2}
+        width={bw} height={bh} rx={rx}
+        fill="white" transform={`rotate(-42, ${cx}, ${cy})`} />
     </svg>
   );
 }
 
-// Siemens Healthineers — solid teal circle with white "S", matching actual brand mark.
+// Siemens Healthineers — white "S" only; teal gradient avatar bg provides the circle.
 function SiemensHealthineersLogo({ size }) {
-  const r  = size * 0.42;
-  const cx = size / 2;
-  const cy = size / 2;
-  const fs = Math.round(size * 0.46);
+  const fs = Math.round(size * 0.68);
   return (
     <svg width={size} height={size} viewBox={`0 0 ${size} ${size}`}
          xmlns="http://www.w3.org/2000/svg">
-      <circle cx={cx} cy={cy} r={r} fill="#009B9E" />
-      <text x={cx} y={cy + fs * 0.36}
+      <text x={size / 2} y={size * 0.73}
         textAnchor="middle"
         fontFamily="'Helvetica Neue', Helvetica, Arial, sans-serif"
         fontSize={fs} fontWeight="700" fill="white"
