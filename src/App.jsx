@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 
 // ── Company data ──────────────────────────────────────────────────────────────
 
@@ -401,61 +401,6 @@ const IconDownload = () => (
   </svg>
 );
 
-const IconChevron = () => (
-  <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round">
-    <polyline points="9 18 15 12 9 6"/>
-  </svg>
-);
-
-// ── Sidebar company card ──────────────────────────────────────────────────────
-
-function CompanyCard({ co, selected, onSelect }) {
-  const [hov, setHov] = useState(false);
-  const active = selected === co.slug;
-
-  return (
-    <button
-      onClick={onSelect}
-      onMouseEnter={() => setHov(true)}
-      onMouseLeave={() => setHov(false)}
-      style={{
-        display: 'flex', alignItems: 'center', gap: '11px',
-        width: '100%', padding: '11px 14px',
-        background: active ? `rgba(${hexRgb(co.accent)},0.08)` : hov ? 'rgba(255,255,255,0.04)' : 'transparent',
-        border: 'none',
-        borderLeft: `2px solid ${active ? co.accent : 'transparent'}`,
-        borderRadius: '0 10px 10px 0',
-        cursor: 'pointer', textAlign: 'left',
-        transition: 'all 0.15s ease',
-        marginBottom: '3px',
-      }}
-    >
-      <Avatar co={co} size={34} />
-
-      <div style={{ flex: 1, minWidth: 0 }}>
-        <div style={{
-          fontSize: '13px', fontWeight: active ? '600' : '500',
-          color: active ? '#f4f4f5' : hov ? '#d4d4d8' : '#a1a1aa',
-          letterSpacing: '-0.01em', marginBottom: '2px',
-          transition: 'color 0.15s ease',
-        }}>{co.name}</div>
-        <div style={{ fontSize: '10px', color: '#3f3f46', letterSpacing: '0.02em' }}>
-          {co.ticker} · {co.tags[0]}
-        </div>
-      </div>
-
-      <div style={{
-        color: active ? co.accent : '#3f3f46',
-        opacity: active || hov ? 1 : 0,
-        transform: active ? 'translateX(0)' : 'translateX(-3px)',
-        transition: 'all 0.15s ease',
-      }}>
-        <IconChevron />
-      </div>
-    </button>
-  );
-}
-
 // ── Landing tile ──────────────────────────────────────────────────────────────
 
 function Tile({ co, onSelect }) {
@@ -513,14 +458,20 @@ function Tile({ co, onSelect }) {
 
 // ── Empty / landing state ─────────────────────────────────────────────────────
 
-function EmptyState({ onSelect }) {
+function EmptyState({ onSelect, query, setQuery, searchRef }) {
+  const visible = filterCompanies(query);
+
+  // Reflow tiles into rows of up to 4
+  const rows = [];
+  for (let i = 0; i < visible.length; i += 4) rows.push(visible.slice(i, i + 4));
+
   return (
     <div style={{
       display: 'flex', flexDirection: 'column', alignItems: 'center',
-      justifyContent: 'center', height: '100%', padding: '40px', gap: '52px',
+      padding: '40px', gap: '40px',
       background: 'radial-gradient(ellipse 60% 50% at 50% 50%, rgba(66,133,244,0.04) 0%, transparent 70%)',
     }}>
-      <div style={{ textAlign: 'center', maxWidth: '440px' }}>
+      <div style={{ textAlign: 'center', maxWidth: '520px', width: '100%' }}>
         <div style={{
           display: 'inline-block', fontSize: '10px', fontWeight: '700',
           letterSpacing: '0.14em', color: '#3f3f46', textTransform: 'uppercase',
@@ -535,23 +486,89 @@ function EmptyState({ onSelect }) {
         }}>
           Select a company<br />to view its report
         </h1>
-        <p style={{ fontSize: '15px', color: '#52525b', lineHeight: '1.65', margin: 0 }}>
-          Eleven curated intelligence profiles ready for your review.<br />
-          Search by name or click a card below.
+        <p style={{ fontSize: '15px', color: '#52525b', lineHeight: '1.65', margin: '0 0 28px' }}>
+          Eleven curated intelligence profiles ready for your review.
         </p>
+
+        {/* Search box */}
+        <div style={{
+          display: 'flex', alignItems: 'center', gap: '10px',
+          background: '#18181b', border: '1px solid #27272a',
+          borderRadius: '12px', padding: '12px 18px',
+          boxShadow: '0 0 0 0px #4285f4',
+          transition: 'border-color 0.2s ease',
+        }}
+          onFocus={e => e.currentTarget.style.borderColor = '#4285f4'}
+          onBlur={e => e.currentTarget.style.borderColor = '#27272a'}
+        >
+          <IconSearch />
+          <input
+            ref={searchRef}
+            value={query}
+            onChange={e => setQuery(e.target.value)}
+            placeholder="Search companies…"
+            style={{
+              flex: 1, background: 'none', border: 'none', outline: 'none',
+              fontSize: '15px', color: '#f4f4f5', caretColor: '#4285f4',
+            }}
+            autoComplete="off" spellCheck={false}
+          />
+          {query && (
+            <button onClick={() => setQuery('')} style={{
+              background: 'none', border: 'none', cursor: 'pointer',
+              color: '#52525b', fontSize: '18px', lineHeight: 1, padding: '0 2px',
+              display: 'flex', alignItems: 'center',
+            }}>×</button>
+          )}
+        </div>
       </div>
 
-      {/* 4 + 4 + 3 grid */}
-      <div style={{ display: 'flex', flexDirection: 'column', gap: '20px', alignItems: 'center' }}>
-        <div style={{ display: 'flex', gap: '20px' }}>
-          {COMPANIES.slice(0, 4).map(co => <Tile key={co.slug} co={co} onSelect={onSelect} />)}
-        </div>
-        <div style={{ display: 'flex', gap: '20px' }}>
-          {COMPANIES.slice(4, 8).map(co => <Tile key={co.slug} co={co} onSelect={onSelect} />)}
-        </div>
-        <div style={{ display: 'flex', gap: '20px' }}>
-          {COMPANIES.slice(8).map(co => <Tile key={co.slug} co={co} onSelect={onSelect} />)}
-        </div>
+      {/* Tile grid — reflows when filtered */}
+      {visible.length === 0
+        ? <p style={{ fontSize: '14px', color: '#3f3f46' }}>No companies match "{query}"</p>
+        : <div style={{ display: 'flex', flexDirection: 'column', gap: '20px', alignItems: 'center' }}>
+            {rows.map((row, i) => (
+              <div key={i} style={{ display: 'flex', gap: '20px' }}>
+                {row.map(co => <Tile key={co.slug} co={co} onSelect={onSelect} />)}
+              </div>
+            ))}
+          </div>
+      }
+    </div>
+  );
+}
+
+// ── Intro / splash screen ─────────────────────────────────────────────────────
+
+function IntroScreen({ fading }) {
+  return (
+    <div style={{
+      position: 'fixed', inset: 0, background: '#000',
+      display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center',
+      zIndex: 999,
+      opacity: fading ? 0 : 1,
+      transition: 'opacity 0.6s ease',
+      pointerEvents: fading ? 'none' : 'all',
+    }}>
+      <div style={{
+        fontSize: '11px', fontWeight: '700', letterSpacing: '0.18em',
+        color: '#3f3f46', textTransform: 'uppercase', marginBottom: '20px',
+      }}>
+        Partnership Intelligence
+      </div>
+      <div style={{
+        fontSize: '38px', fontWeight: '700', color: '#f4f4f5',
+        letterSpacing: '-0.04em', lineHeight: '1.1', textAlign: 'center',
+      }}>
+        Partnership Intelligence<br />Platform
+      </div>
+      <div style={{
+        marginTop: '32px', display: 'flex', alignItems: 'center', gap: '8px',
+      }}>
+        <div style={{ width: '6px', height: '6px', borderRadius: '50%', background: '#22c55e', boxShadow: '0 0 8px #22c55e' }} />
+        <span style={{ fontSize: '11px', color: '#3f3f46', letterSpacing: '0.06em' }}>
+          11 intelligence profiles
+        </span>
       </div>
     </div>
   );
@@ -559,19 +576,41 @@ function EmptyState({ onSelect }) {
 
 // ── Report viewer ─────────────────────────────────────────────────────────────
 
-function ReportView({ co }) {
+function ReportView({ co, onBack }) {
   const [dlHov, setDlHov] = useState(false);
-  // Use Vite's BASE_URL so paths work on both localhost and GitHub Pages
+  const [backHov, setBackHov] = useState(false);
   const pdfUrl = `${import.meta.env.BASE_URL}reports/${co.slug}.pdf`;
 
   return (
-    <div style={{ display: 'flex', flexDirection: 'column', height: '100%' }}>
+    <div style={{ display: 'flex', flexDirection: 'column', height: '100vh' }}>
       {/* Header bar */}
       <div style={{
         height: '60px', flexShrink: 0, padding: '0 28px',
         display: 'flex', alignItems: 'center', gap: '14px',
         background: '#0f0f11', borderBottom: '1px solid #1c1c1f',
       }}>
+        {/* Back button */}
+        <button
+          onClick={onBack}
+          onMouseEnter={() => setBackHov(true)}
+          onMouseLeave={() => setBackHov(false)}
+          style={{
+            display: 'flex', alignItems: 'center', gap: '6px',
+            background: 'none', border: 'none', cursor: 'pointer',
+            color: backHov ? '#e4e4e7' : '#52525b',
+            fontSize: '12px', fontWeight: '500', padding: '6px 10px 6px 6px',
+            borderRadius: '7px',
+            transition: 'all 0.15s ease', flexShrink: 0,
+          }}
+        >
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round">
+            <polyline points="15 18 9 12 15 6"/>
+          </svg>
+          All companies
+        </button>
+
+        <div style={{ width: '1px', height: '20px', background: '#27272a', flexShrink: 0 }} />
+
         <Avatar co={co} size={30} />
 
         <div style={{ flex: 1, minWidth: 0 }}>
@@ -639,126 +678,55 @@ function ReportView({ co }) {
 // ── Root ──────────────────────────────────────────────────────────────────────
 
 export default function App() {
-  const [query, setQuery] = useState('');
   const [selected, setSelected] = useState(null);
+  const [query, setQuery]       = useState('');
+  const [showIntro, setShowIntro] = useState(true);
+  const [introFading, setIntroFading] = useState(false);
+  const searchRef = useRef(null);
+  const timers = useRef([]);
 
-  const visible = filterCompanies(query);
   const co = COMPANIES.find(c => c.slug === selected) ?? null;
-
   const handleSelect = (slug) => { setSelected(slug); setQuery(''); };
-  const handleKey = (e) => { if (e.key === 'Enter' && visible.length === 1) handleSelect(visible[0].slug); };
+
+  // ── Demo sequence ────────────────────────────────────────────────────────────
+  useEffect(() => {
+    const add = (fn, ms) => { const t = setTimeout(fn, ms); timers.current.push(t); return t; };
+
+    // 1. Hold intro for 1.4s, then fade it out
+    add(() => setIntroFading(true), 1400);
+    // 2. Remove intro overlay after fade (0.6s)
+    add(() => setShowIntro(false), 2000);
+
+    // 3. Start typing "Eli Lilly" character by character
+    const target = 'Eli Lilly';
+    target.split('').forEach((_, i) => {
+      add(() => setQuery(target.slice(0, i + 1)), 2400 + i * 90);
+    });
+
+    // 4. After typing finishes, wait a beat then open the report
+    const afterTyping = 2400 + target.length * 90 + 500;
+    add(() => { setSelected('eli-lilly'); setQuery(''); }, afterTyping);
+
+    // 5. Hold report for 3s, then go back
+    add(() => setSelected(null), afterTyping + 3000);
+
+    return () => timers.current.forEach(clearTimeout);
+  }, []);
 
   return (
-    <div style={{ display: 'flex', height: '100vh', background: '#09090b', overflow: 'hidden' }}>
-
-      {/* ── Sidebar ─────────────────────────────────────────────────────────── */}
-      <aside style={{
-        width: '272px', flexShrink: 0,
-        background: '#0f0f11', borderRight: '1px solid #1c1c1f',
-        display: 'flex', flexDirection: 'column', height: '100vh',
-      }}>
-        {/* Brand — click to return home */}
-        <div
-          onClick={() => setSelected(null)}
-          style={{ padding: '22px 18px 18px', cursor: 'pointer' }}
-        >
-          <div style={{ display: 'flex', alignItems: 'center', gap: '10px', marginBottom: '3px' }}>
-            {/* App icon: retro CRT monitor */}
-            <div style={{
-              width: '30px', height: '30px', borderRadius: '8px',
-              background: '#ffffff',
-              border: '1px solid #e4e4e7',
-              display: 'flex', alignItems: 'center', justifyContent: 'center', flexShrink: 0,
-            }}>
-              <svg width="20" height="20" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg">
-                {/* Monitor bezel */}
-                <rect x="1" y="1" width="18" height="12.5" rx="1.5" fill="#111111"/>
-                {/* Screen glass */}
-                <rect x="2.5" y="2.2" width="15" height="9.8" rx="0.8" fill="#0d0d0d"/>
-                {/* Green phosphor glow — scanline text effect */}
-                <rect x="4"   y="4"   width="5" height="1.1" rx="0.3" fill="#22c55e" opacity="0.9"/>
-                <rect x="4"   y="6"   width="8" height="1.1" rx="0.3" fill="#22c55e" opacity="0.6"/>
-                <rect x="4"   y="8"   width="6" height="1.1" rx="0.3" fill="#22c55e" opacity="0.6"/>
-                {/* Blinking cursor block */}
-                <rect x="10.2" y="4" width="1.2" height="1.1" rx="0.2" fill="#22c55e"/>
-                {/* Neck */}
-                <rect x="9" y="13.5" width="2" height="2.5" fill="#111111"/>
-                {/* Base */}
-                <rect x="5.5" y="16" width="9" height="1.6" rx="0.8" fill="#111111"/>
-                {/* Screen glare highlight */}
-                <rect x="3.5" y="3" width="3.5" height="1.2" rx="0.4" fill="white" opacity="0.07"/>
-              </svg>
-            </div>
-            <div style={{ fontSize: '13px', fontWeight: '700', color: '#f4f4f5', letterSpacing: '-0.02em' }}>
-              Partnership Intelligence
-            </div>
-          </div>
-          <div style={{ fontSize: '10px', color: '#3f3f46', letterSpacing: '0.01em', paddingLeft: '40px', fontFamily: 'monospace' }}>
-            partnership-intelligence-analyzer
-          </div>
-        </div>
-
-        <div style={{ height: '1px', background: '#1c1c1f', margin: '0 18px 14px' }} />
-
-        {/* Search */}
-        <div style={{ padding: '0 12px 10px' }}>
-          <div style={{
-            display: 'flex', alignItems: 'center', gap: '8px',
-            background: '#18181b', border: '1px solid #27272a',
-            borderRadius: '9px', padding: '9px 12px',
-          }}>
-            <IconSearch />
-            <input
-              value={query}
-              onChange={e => setQuery(e.target.value)}
-              onKeyDown={handleKey}
-              placeholder="Search companies…"
-              style={{
-                flex: 1, background: 'none', border: 'none', outline: 'none',
-                fontSize: '13px', color: '#f4f4f5', caretColor: '#4285f4',
-              }}
-              autoComplete="off" spellCheck={false}
+    <div style={{ height: '100vh', background: '#09090b', overflow: 'hidden' }}>
+      {showIntro && <IntroScreen fading={introFading} />}
+      {co
+        ? <ReportView co={co} onBack={() => setSelected(null)} />
+        : <main style={{ height: '100%', overflowY: 'auto' }}>
+            <EmptyState
+              onSelect={handleSelect}
+              query={query}
+              setQuery={setQuery}
+              searchRef={searchRef}
             />
-            {query && (
-              <button onClick={() => setQuery('')} style={{
-                background: 'none', border: 'none', cursor: 'pointer',
-                color: '#52525b', fontSize: '15px', lineHeight: 1, padding: '0 2px',
-                display: 'flex', alignItems: 'center',
-              }}>×</button>
-            )}
-          </div>
-        </div>
-
-        {/* List label */}
-        <div style={{ padding: '4px 18px 8px', fontSize: '9px', fontWeight: '700', color: '#27272a', letterSpacing: '0.1em', textTransform: 'uppercase' }}>
-          Companies · {visible.length}/{COMPANIES.length}
-        </div>
-
-        {/* Company list */}
-        <div style={{ flex: 1, padding: '0 6px', overflowY: 'auto' }}>
-          {visible.length === 0
-            ? <div style={{ padding: '24px 12px', fontSize: '12px', color: '#3f3f46', textAlign: 'center' }}>No matches found</div>
-            : visible.map(c => (
-                <CompanyCard key={c.slug} co={c} selected={selected} onSelect={() => handleSelect(c.slug)} />
-              ))
-          }
-        </div>
-
-        {/* Footer */}
-        <div style={{ padding: '14px 18px', borderTop: '1px solid #1c1c1f' }}>
-          <div style={{ display: 'flex', alignItems: 'center', gap: '6px' }}>
-            <div style={{ width: '6px', height: '6px', borderRadius: '50%', background: '#22c55e', boxShadow: '0 0 6px #22c55e' }} />
-            <span style={{ fontSize: '10px', color: '#3f3f46', fontWeight: '500', letterSpacing: '0.03em' }}>
-              Demo · 11 reports available
-            </span>
-          </div>
-        </div>
-      </aside>
-
-      {/* ── Main panel ──────────────────────────────────────────────────────── */}
-      <main style={{ flex: 1, overflow: 'hidden', display: 'flex', flexDirection: 'column' }}>
-        {co ? <ReportView co={co} /> : <EmptyState onSelect={handleSelect} />}
-      </main>
+          </main>
+      }
     </div>
   );
 }
