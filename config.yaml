@@ -1,0 +1,76 @@
+# ARIA-PI runtime configuration.
+# Values here are defaults; environment variables (see .env.example) override secrets.
+
+claude:
+  model: claude-opus-4-7
+  max_tokens: 4096
+  temperature: 0.2
+  max_retries: 3
+
+pubmed:
+  base_url: https://eutils.ncbi.nlm.nih.gov/entrez/eutils
+  default_max_results: 20
+  requests_per_second_no_key: 3
+  requests_per_second_with_key: 10
+
+nih_reporter:
+  base_url: https://api.reporter.nih.gov/v2
+  default_fiscal_years_back: 5
+
+clinicaltrials:
+  base_url: https://clinicaltrials.gov/api/v2
+  max_results: 50
+
+sec_edgar:
+  full_text_search_url: https://efts.sec.gov/LATEST/search-index
+  submissions_url: https://data.sec.gov/submissions
+  company_search_url: https://www.sec.gov/cgi-bin/browse-edgar
+
+openalex:
+  base_url: https://api.openalex.org
+
+tavily:
+  base_url: https://api.tavily.com
+  default_max_results: 5
+
+unc:
+  primary_affiliation: "University of North Carolina at Chapel Hill"
+  affiliation_aliases:
+    - "University of North Carolina at Chapel Hill"
+    - "UNC Chapel Hill"
+    - "UNC-Chapel Hill"
+    - "UNC School of Medicine"
+    - "Gillings School of Global Public Health"
+    - "UNC Eshelman School of Pharmacy"
+    - "Lineberger Comprehensive Cancer Center"
+
+selection:
+  top_n: 5
+  min_score: 55
+  relationship_active_window_months: 24
+
+verification:
+  min_sources_per_claim: 2
+  banned_source_patterns:
+    - "wikipedia.org"
+    - "en.m.wikipedia.org"
+    - "crunchbase.com"
+    - "zoominfo.com"
+    - "linkedin.com"
+    - "glassdoor.com"
+    - "indeed.com"
+  banned_phrases:
+    - "strong research capacity"
+    - "world-class"
+    - "leading institution"
+    - "robust pipeline"
+    - "innovative"
+    - "cutting-edge"
+
+output:
+  dir: output
+  blocked_dir: output/blocked
+  logs_dir: logs
+
+paths:
+  data_dir: aria_pi/data
